@@ -1,4 +1,3 @@
-# /app/database.py
 import os, time
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
@@ -10,7 +9,6 @@ Base = declarative_base()
 engine = None
 last_err = None
 
-# tenta conectar ~60s
 for i in range(30):
     try:
         tmp = create_engine(
@@ -19,11 +17,10 @@ for i in range(30):
             pool_recycle=3600,
             future=True,
         )
-        # testa de VERDADE a conexão
         with tmp.connect() as conn:
             conn.execute(text("SELECT 1"))
         engine = tmp
-        print("✅ Conectado ao MySQL.")
+        print("Conectado ao MySQL.")
         break
     except Exception as e:
         last_err = e
@@ -31,7 +28,7 @@ for i in range(30):
         time.sleep(2)
 
 if engine is None:
-    raise RuntimeError(f"❌ Não consegui conectar ao MySQL: {last_err}")
+    raise RuntimeError(f"Não consegui conectar ao MySQL: {last_err}")
 
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False, future=True)
 
