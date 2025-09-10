@@ -4,11 +4,18 @@ services:
     container_name: quiz-api
     ports:
       - "8000:8000"
+    volumes:
+      - ./app:/app
     environment:
       - DATABASE_URL=mysql+pymysql://quiz:R00t1PaS1@db:3306/quizdb
     depends_on:
       db:
         condition: service_healthy
+    command: >
+      uvicorn app.main:app
+      --host 0.0.0.0 --port 8000
+      --reload
+      --reload-dir /app
 
   db:
     image: mysql:8.0
