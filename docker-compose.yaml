@@ -1,0 +1,34 @@
+services:
+  web:
+    build: .
+    container_name: quiz-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=mysql+pymysql://quiz:R00t1PaS1@db:3306/quizdb
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: quiz-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: R00t1PaS1
+      MYSQL_DATABASE: quizdb
+      MYSQL_USER: quiz
+      MYSQL_PASSWORD: R00t1PaS1
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -prootpass --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+
+volumes:
+  mysqldata:
