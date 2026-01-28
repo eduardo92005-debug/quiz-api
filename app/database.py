@@ -2,7 +2,7 @@ import os, time
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://quiz:R00t1PaS1@db:3306/quizdb")
+DATABASE_URL = os.getenv("DATABASE_URL", "mysql+pymysql://quiz:R00t1PaS1@quiz-api-mysql:3306/quizdb")
 
 Base = declarative_base()
 
@@ -38,3 +38,4 @@ def get_db():
         yield db
     finally:
         db.close()
+
